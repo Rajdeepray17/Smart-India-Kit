@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart India Kit — Rotaract Club of Social Crew of RID 3250</title>
+  <meta name="description" content="Free learning resources, national helplines, job portals, and a tribute to Indian freedom fighters. Rotaract Club of Social Crew, Netaji Subhas University, Jamshedpur.">
+  <style>
+    :root{
+      --saffron:#FF9933; --white:#FFFFFF; --green:#138808; --navy:#000080;
+      --bg:#0b1220; --card:#0f172a; --muted:#94a3b8; --ring:#334155;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Inter,sans-serif;
+      color:#e5e7eb; background: radial-gradient(1200px 600px at 20% -10%, #1f2937 0%, #0b1220 60%);
+    }
+    header{
+      position:sticky; top:0; backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.6); border-bottom:1px solid #1f2937; z-index:10;
+    }
+    .wrap{max-width:1080px; margin:0 auto; padding:16px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .flag{display:flex; height:8px; border-radius:999px; overflow:hidden}
+    .flag span{width:36px}
+    .title{font-size:clamp(18px,3vw,24px); font-weight:700}
+    main{padding:24px 16px 64px}
+    h2{font-size:clamp(20px,3.2vw,28px); margin:0 0 12px}
+    p{color:var(--muted); margin:0 0 16px}
+    .grid{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid var(--ring); border-radius:16px; padding:18px;
+      transition:.25s transform,.25s box-shadow,.25s border-color;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      cursor:pointer;
+    }
+    .card:hover{transform:translateY(-2px); border-color:#475569}
+    .tag{font-size:12px; font-weight:700; letter-spacing:.06em; color:#cbd5e1; opacity:.8}
+    .list{margin:10px 0 0; padding:0 0 0 18px}
+    .list li{margin:6px 0}
+    .fighters{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .fighter{padding:14px; border:1px dashed #374151; border-radius:14px; background:#0e1425}
+    .fighter h4{margin:0 0 6px; font-size:16px}
+    .footer{margin-top:28px; text-align:center; color:#a9b1bd; font-size:14px}
+    /* modal */
+    .modal{display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); align-items:center; justify-content:center; padding:20px}
+    .modal-content{width:min(800px,96vw); background:#0f172a; border:1px solid #334155; border-radius:18px; padding:20px}
+    .modal h3{margin:0 0 6px}
+    .close{float:right; border:0; background:#1f2937; color:#e5e7eb; padding:6px 10px; border-radius:10px; cursor:pointer}
+    /* ribbons */
+    .ribbon{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid #334155}
+    .ribbon .dot{width:8px; height:8px; border-radius:999px; background:var(--green)}
+    a{color:#93c5fd; text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <div class="flag" aria-label="Indian tricolour">
+        <span style="background:var(--saffron)"></span>
+        <span style="background:var(--white)"></span>
+        <span style="background:var(--green)"></span>
+      </div>
+      <div class="title">Smart India Kit — Rotaract Club of Social Crew (RID 3250)</div>
+      <span class="ribbon" style="margin-left:auto"><span class="dot"></span> Netaji Subhas University, Jamshedpur</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section style="margin-bottom:18px">
+      <h2>Empowering with access</h2>
+      <p>This Independence Day initiative brings together free learning resources, national helpline contacts, and trusted job portals—plus a humble tribute to the heroes of India’s freedom struggle.</p>
+    </section>
+
+    <section class="grid" aria-label="Main resources">
+      <article class="card" data-modal="courses">
+        <div class="tag">1) Courses & Tutorials</div>
+        <h3>Free, high-quality learning</h3>
+        <p>Curated playlists to help students upskill quickly.</p>
+      </article>
+
+      <article class="card" data-modal="helplines">
+        <div class="tag">2) National Helpline</div>
+        <h3>Important emergency numbers</h3>
+        <p>Direct contacts for support and emergency services.</p>
+      </article>
+
+      <article class="card" data-modal="jobs">
+        <div class="tag">3) Job Portals</div>
+        <h3>Fresher & experienced opportunities</h3>
+        <p>Popular platforms to begin or grow your career.</p>
+      </article>
+    </section>
+
+    <section style="margin-top:22px">
+      <h2>Stories of Indian Freedom Fighters</h2>
+      <div class="fighters">
+        <div class="fighter"><h4>Mahatma Gandhi</h4><p>Leader of the non-violent independence movement. <a href="https://en.wikipedia.org/wiki/Mahatma_Gandhi" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Subhas Chandra Bose</h4><p>Led the Indian National Army. <a href="https://en.wikipedia.org/wiki/Subhas_Chandra_Bose" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Bhagat Singh</h4><p>Revolutionary freedom fighter. <a href="https://en.wikipedia.org/wiki/Bhagat_Singh" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Rani Lakshmibai</h4><p>Queen of Jhansi in the 1857 revolt. <a href="https://en.wikipedia.org/wiki/Rani_of_Jhansi" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Sardar Vallabhbhai Patel</h4><p>Unifier of India post-independence. <a href="https://en.wikipedia.org/wiki/Vallabhbhai_Patel" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Dr. B. R. Ambedkar</h4><p>Architect of the Constitution. <a href="https://en.wikipedia.org/wiki/B._R._Ambedkar" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Jawaharlal Nehru</h4><p>India’s first Prime Minister. <a href="https://en.wikipedia.org/wiki/Jawaharlal_Nehru" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Chandra Shekhar Azad</h4><p>Revolutionary leader. <a href="https://en.wikipedia.org/wiki/Chandra_Shekhar_Azad" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Mangal Pandey</h4><p>Key figure in 1857 rebellion. <a href="https://en.wikipedia.org/wiki/Mangal_Pandey" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Bal Gangadhar Tilak</h4><p>“Father of Indian unrest.” <a href="https://en.wikipedia.org/wiki/Bal_Gangadhar_Tilak" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Annie Besant</h4><p>Advocated Indian self-rule. <a href="https://en.wikipedia.org/wiki/Annie_Besant" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Sarojini Naidu</h4><p>“Nightingale of India.” <a href="https://en.wikipedia.org/wiki/Sarojini_Naidu" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Bipin Chandra Pal</h4><p>Part of Lal-Bal-Pal trio. <a href="https://en.wikipedia.org/wiki/Bipin_Chandra_Pal" target="_blank" rel="noopener">Read more</a></p></div>
+        <div class="fighter"><h4>Gopal Krishna Gokhale</h4><p>Moderate leader & reformer. <a href="https://en.wikipedia.org/wiki/Gopal_Krishna_Gokhale" target="_blank" rel="noopener">Read more</a></p></div>
+      </div>
+    </section>
+
+    <p class="footer">Powered by Smart India Kit • Rotaract Club of Social Crew of RID 3250</p>
+  </main>
+
+  <!-- Modals -->
+  <div class="modal" id="courses" role="dialog" aria-modal="true" aria-labelledby="courses-title">
+    <div class="modal-content">
+      <button class="close" aria-label="Close">Close</button>
+      <h3 id="courses-title">Courses & Tutorials</h3>
+      <ul class="list">
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Basic of Computer Course</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Cyber Security</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Python Course</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">HTML & CSS</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Full Stack</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Java</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Digital Marketing</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">AI</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Top 10 Skills</a></li>
+        <li><a href="https://youtu.be" target="_blank" rel="noopener">Self Defence</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal" id="helplines" role="dialog" aria-modal="true" aria-labelledby="helplines-title">
+    <div class="modal-content">
+      <button class="close" aria-label="Close">Close</button>
+      <h3 id="helplines-title">National Helpline (India)</h3>
+      <ul class="list">
+        <li>Police — 100</li><li>Fire Brigade — 101</li><li>Ambulance — 102</li><li>Medical Emergency — 108</li>
+        <li>Women Helpline — 181</li><li>Childline — 1098</li><li>Cyber Crime — 1930</li><li>Railway Helpline — 139</li>
+        <li>Road Accident — 1073</li><li>Senior Citizens — 14567</li><li>Health — 104</li><li>HIV/AIDS — 1097</li>
+        <li><a href="https://v2.india.gov.in/helpline" target="_blank" rel="noopener">Govt. of India Helpline Directory</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal" id="jobs" role="dialog" aria-modal="true" aria-labelledby="jobs-title">
+    <div class="modal-content">
+      <button class="close" aria-label="Close">Close</button>
+      <h3 id="jobs-title">Job Portals</h3>
+      <ul class="list">
+        <li><a href="https://in.indeed.com" target="_blank" rel="noopener">Indeed</a></li>
+        <li><a href="https://www.naukri.com" target="_blank" rel="noopener">Naukri</a></li>
+        <li><a href="https://apna.co" target="_blank" rel="noopener">Apna</a></li>
+        <li><a href="https://wellfound.com" target="_blank" rel="noopener">Wellfound</a></li>
+        <li><a href="https://www.careerflow.ai" target="_blank" rel="noopener">CareerFlow AI</a></li>
+        <li><a href="https://www.shine.com" target="_blank" rel="noopener">Shine</a></li>
+        <li><a href="https://internshala.com" target="_blank" rel="noopener">Internshala</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Intersection animations (simple)
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.transition='transform .6s ease, opacity .6s ease'; e.target.style.transform='translateY(0)'; e.target.style.opacity=1; }});
+    },{threshold:.2});
+    document.querySelectorAll('.card,.fighter').forEach(el=>{
+      el.style.transform='translateY(8px)'; el.style.opacity=.0; observer.observe(el);
+    });
+
+    // Modal handling
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const id = card.getAttribute('data-modal');
+        const modal = document.getElementById(id);
+        if(modal){ modal.style.display='flex'; modal.querySelector('.modal-content').style.animation='slideIn .25s ease forwards'; }
+      });
+    });
+    document.querySelectorAll('.close').forEach(btn=>{
+      btn.addEventListener('click', ()=> btn.closest('.modal').style.display='none');
+    });
+    window.addEventListener('click', e=>{
+      document.querySelectorAll('.modal').forEach(m=>{ if(e.target===m){ m.style.display='none'; } });
+    });
+  </script>
+</body>
+  </html>
