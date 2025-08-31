@@ -41,7 +41,7 @@
     opacity:0.05;
     animation: spin 30s linear infinite;
   }
-  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes spin{to{transform:rotate(360deg);} }
   h1{color:var(--navy); margin:0; font-size:2.5rem;}
   .club{color:var(--green); font-weight:bold;}
   .flag-band{
@@ -186,7 +186,6 @@
       <p><strong>Club:</strong> Rotaract club of social crew of Netaji Subhas University Jamshedpur is an institute based Rotaract NGO of RID 3250 Bihar and Jharkhand.</p>  
       <p><strong>Event:</strong> On the occasion of Independence Day we create a website in order to provide the youth and the needys a platform through which they can access many resources freely available on the internet and use them for their daily use and emergency needs. This includes courses and tutorials as well, which will skill up the youth and serve the educational purpose perfectly.</p>  
     </header>    
-
     <section class="sections">  
       <div class="card" data-modal="courses">  
         <h2>1) Courses & Tutorials</h2>  
@@ -216,8 +215,15 @@
         <h2>7) Other Resources</h2>  
         <p>General knowledge and educational video resources.</p>  
       </div> 
+      <div class="card" data-modal="news-headlines">  
+        <h2>8) News Headlines 24x7</h2>  
+        <p>Latest news headlines from popular Indian news channels.</p>  
+      </div>
+      <div class="card" data-modal="govt-exams">  
+        <h2>9) Government Exam / Result</h2>  
+        <p>Information and results for government job exams.</p>  
+      </div>
     </section>    
-
     <section class="fighters">  
       <h2>Stories of Indian Freedom Fighters</h2>  
       <div class="grid">  
@@ -237,15 +243,12 @@
         <div class="fighter"><h3>🇮🇳 Gopal Krishna Gokhale</h3><p>Moderate political leader & reformer.</p><a href="https://en.wikipedia.org/wiki/Gopal_Krishna_Gokhale" target="_blank">Read More</a></div>  
       </div>  
     </section>    
-
     <footer>  
       <div class="flag-strip"></div>  
       <p>Powered by <strong>Smart India Kit</strong> • Rotaract Club of Social Crew of RID 3250</p>  
     </footer>  
   </div>  
-
   <!-- Modals -->  
-
   <div id="courses" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -270,7 +273,6 @@
       </ul>
     </div>
   </div>  
-
   <div id="helpline" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -283,7 +285,6 @@
       </ul>
     </div>
   </div>  
-
   <div id="jobs" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -299,7 +300,6 @@
       </ul>
     </div>
   </div>  
-
   <div id="learning-platforms" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -311,7 +311,6 @@
       </ul>
     </div>
   </div>
-
   <div id="educational-resources" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -323,7 +322,6 @@
       </ul>
     </div>
   </div>
-
   <div id="skill-development" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -335,7 +333,6 @@
       </ul>
     </div>
   </div>
-
   <div id="other-resources" class="modal">
     <div class="modal-content">
       <button class="close">Close</button>
@@ -344,6 +341,32 @@
         <li><a href="https://wikipedia.org" target="_blank">Wikipedia</a> - Online encyclopedia</li>
         <li><a href="https://ed.ted.com" target="_blank">TED-Ed</a> - Educational videos</li>
         <li><a href="https://crashcourse.com" target="_blank">Crash Course</a> - Educational videos</li>
+      </ul>
+    </div>
+  </div>
+  <div id="news-headlines" class="modal">
+    <div class="modal-content">
+      <button class="close">Close</button>
+      <h3>News Headlines 24x7</h3>  
+      <ul>
+        <li><a href="https://www.abplive.com/news" target="_blank">ABP News</a></li>
+        <li><a href="https://www.aajtak.in" target="_blank">Aaj Tak</a></li>
+        <li><a href="https://www.republicworld.com/latest-news.html" target="_blank">Republic Bharat</a></li>
+        <li><a href="https://www.indiatoday.in" target="_blank">India Today</a></li>
+        <li><a href="https://www.hindustantimes.com" target="_blank">Hindustan Times</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="govt-exams" class="modal">
+    <div class="modal-content">
+      <button class="close">Close</button>
+      <h3>Government Exam / Result</h3>  
+      <ul>
+        <li><a href="https://www.sarkariexam.com/" target="_blank">Sarkari Exam</a></li>
+        <li><a href="https://sarkariresult.com.cm/" target="_blank">Sarkari Result</a></li>
+        <li><a href="https://www.freejobalert.com/" target="_blank">Free Job Alert</a></li>
+        <li><a href="https://pmvbry.labour.gov.in/" target="_blank">Pradhan Mantri Viksit Bharat Rozgar Yojna</a></li>
+        <li><a href="https://www.scconline.com/" target="_blank">SSC Online</a></li>
       </ul>
     </div>
   </div>
