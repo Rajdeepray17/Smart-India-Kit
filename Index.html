@@ -1,404 +1,855 @@
 <!DOCTYPE html>
-<html lang="en">  
-<head>  
-<meta charset="utf-8" />  
-<meta name="viewport" content="width=device-width, initial-scale=1" />  
-<title>Smart India Kit — Rotaract Club of Netaji Subhas University of RID 3250</title>  
-<style>  
-  :root{  
-    --saffron:#FF9933;  
-    --white:#FFFFFF;  
-    --green:#138808;  
-    --navy:#000080;  
-  }  
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Smart India Kit — Rotaract Club of Netaji Subhas University of RID 3250</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{
+    --saffron: #FF9933;
+    --white: #FFFFFF;
+    --green: #138808;
+    --navy: #000080;
+    --light-bg: #fdfdfd;
+    --gray: #f4f4f4;
+  }
+  
   body{
     margin:0;
-    font-family: "Segoe UI", sans-serif;
-    background:linear-gradient(180deg, var(--saffron) 0%, var(--white) 50%, var(--green) 100%);
+    font-family: "Segoe UI", "Roboto", Helvetica, Arial, sans-serif;
+    background: linear-gradient(180deg, var(--saffron) 0%, var(--white) 50%, var(--green) 100%);
     background-attachment: fixed;
-    overflow-x:hidden;
+    overflow-x: hidden;
+    color: #333;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  /* --- Petal Animation Canvas --- */
+  #petalCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
   .wrap{
-    max-width:1100px;
-    margin:auto;
-    padding:20px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
   }
+
+  /* --- Header Styling --- */
   header{
-    background:rgba(255,255,255,0.9);
-    border-radius:20px;
-    padding:30px;
-    position:relative;
-    overflow:hidden;
-    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
   }
+
   .ashoka{
-    position:absolute;
-    right:-50px;
-    top:-50px;
-    width:200px;
-    height:200px;
-    background:url('https://upload.wikimedia.org/wikipedia/commons/1/17/Ashoka_Chakra.svg') no-repeat center/contain;
-    opacity:0.05;
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 220px;
+    height: 220px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/1/17/Ashoka_Chakra.svg') no-repeat center/contain;
+    opacity: 0.08;
     animation: spin 30s linear infinite;
   }
-  @keyframes spin{to{transform:rotate(360deg);} }
-  h1{color:var(--navy); margin:0; font-size:2.5rem;}
-  .club{color:var(--green); font-weight:bold;}
+  @keyframes spin{ to{transform: rotate(360deg);} }
+
+  h1 { color: var(--navy); margin: 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 1px; }
+  .club { color: var(--green); font-weight: 700; margin-top: 5px; font-size: 1.1rem; }
+  
   .flag-band{
-    height:8px;
-    background:linear-gradient(to right, var(--saffron), var(--white), var(--green));
-    margin:15px 0;
-    border-radius:4px;
+    height: 6px;
+    background: linear-gradient(to right, var(--saffron), var(--white), var(--green));
+    margin: 20px 0;
+    border-radius: 10px;
   }
+
+  header p { line-height: 1.6; color: #555; }
+  header strong { color: var(--navy); }
+
+  /* --- Main Grid Section --- */
   .sections{
-    display:grid;
-    gap:20px;
-    margin-top:30px;
+    display: grid;
+    gap: 25px;
+    margin-top: 40px;
+    grid-template-columns: 1fr; /* Mobile First */
   }
-  @media(min-width:768px){
-    .sections{grid-template-columns:repeat(3, 1fr);}
+  @media(min-width: 600px){
+    .sections{ grid-template-columns: repeat(2, 1fr); }
   }
+  @media(min-width: 900px){
+    .sections{ grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Enhanced Card Styling */
   .card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    cursor:pointer;
-    transition:transform 0.3s, box-shadow 0.3s;
-    position:relative;
-    overflow:hidden;
-    opacity:0;
-    transform:translateY(50px);
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0; /* For scroll animation */
+    transform: translateY(50px);
+    border-bottom: 4px solid transparent;
   }
-  .card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+
+  .card:active { transform: scale(0.98); }
+
+  @media(hover: hover) {
+    .card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      border-bottom: 4px solid var(--saffron);
+    }
   }
-  .card::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at top left, rgba(255,153,51,0.15), transparent),
-                radial-gradient(circle at bottom right, rgba(19,136,8,0.15), transparent);
-    opacity:0;
-    transition:opacity 0.3s;
+
+  .card h2 { 
+    font-size: 1.25rem; 
+    color: var(--navy); 
+    margin-bottom: 10px; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  .card:hover::after{opacity:1;}
-  /* Freedom Fighters */
+  
+  .card i { color: var(--saffron); font-size: 1.4rem; }
+  .card p { color: #666; font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+  /* Decorative Corner for Cards */
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(19, 136, 8, 0.1) 50%);
+    border-radius: 0 16px 0 0;
+  }
+
+  /* --- Freedom Fighters Section --- */
   .fighters{
-    margin-top:40px;
-    background:rgba(255,255,255,0.95);
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.1);
-    opacity:0;
-    transform:translateY(50px);
+    margin-top: 50px;
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(50px);
   }
-  .fighters .grid{
-    display:grid;
-    gap:15px;
+  .fighters h2 { color: var(--navy); text-align: center; margin-bottom: 30px; }
+
+  .fighters .grid{ display: grid; gap: 25px; } /* Increased gap slightly */
+  @media(min-width: 768px){
+    .fighters .grid{ grid-template-columns: repeat(4, 1fr); }
   }
-  @media(min-width:768px){
-    .fighters .grid{grid-template-columns:repeat(4,1fr);}
-  }
+
   .fighter{
-    border:3px solid transparent;
-    border-image:linear-gradient(90deg, var(--saffron), var(--white), var(--green)) 1;
-    border-radius:10px;
-    background:white;
-    padding:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-    transition:transform 0.3s, box-shadow 0.3s;
+    border-radius: 16px;
+    background: white;
+    padding: 20px; /* Increased padding */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    text-align: center;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .fighter:hover{
-    transform:translateY(-5px);
-    box-shadow:0 6px 15px rgba(0,0,0,0.15);
+  
+  .fighter:hover{ 
+    transform: translateY(-5px); 
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
+    border-color: var(--saffron); 
   }
-  .fighter h3{margin-top:0;}
-  .fighter a{color:var(--navy); font-weight:bold; text-decoration:none;}
-  .fighter a:hover{text-decoration:underline;}
-  /* Modals */
+
+  /* Updated Picture Circle Styling */
+  .fighter img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--white);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-bottom: 12px;
+    background-color: #f0f0f0; /* Fallback placeholder color */
+  }
+
+  .fighter h3 { margin: 5px 0 5px; font-size: 1.1rem; color: #333; }
+  .fighter p { font-size: 0.85rem; color: #666; margin-bottom: 15px; flex-grow: 1; } 
+  .fighter a { 
+    display: inline-block; 
+    padding: 6px 18px; 
+    background: var(--navy); 
+    color: white; 
+    border-radius: 20px; 
+    font-size: 0.85rem; 
+    text-decoration: none; 
+    transition: background 0.2s;
+  }
+  .fighter a:hover { background: var(--saffron); }
+
+  /* --- Modals --- */
   .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    animation:fadeIn 0.3s ease forwards;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease forwards;
+    padding: 15px;
   }
-  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+
   .modal-content{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    max-height:80vh;
-    overflow-y:auto;
-    max-width:500px;
-    width:90%;
-    transform:translateY(-50px);
-    opacity:0;
-    animation: slideIn 0.4s ease forwards;
+    background: #fff;
+    padding: 0;
+    border-radius: 16px;
+    max-height: 85vh;
+    overflow-y: auto;
+    max-width: 600px;
+    width: 100%;
+    transform: translateY(30px);
+    opacity: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
-  @keyframes slideIn{
-    to{transform:translateY(0); opacity:1;}
+  
+  .modal-header {
+    background: var(--navy);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
-  .modal-content h3{margin-top:0;}
-  .close{
-    display:inline-block;
-    margin-bottom:10px;
-    cursor:pointer;
-    background:var(--saffron);
-    color:white;
-    padding:5px 10px;
-    border:none;
-    border-radius:5px;
+  
+  .modal-header h3 { margin: 0; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+  
+  .close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
   }
+  .close:hover { background: var(--saffron); transform: rotate(90deg); }
+
+  .modal-body { padding: 25px; }
+
+  /* Resource Grid Styling inside Modal */
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+  
+  @media(min-width: 600px) {
+    .resource-list { grid-template-columns: 1fr 1fr; }
+  }
+
+  .resource-list li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: var(--gray);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #444;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-left: 4px solid var(--green);
+  }
+
+  .resource-list li a:hover {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateX(5px);
+    border-left-color: var(--saffron);
+    color: var(--navy);
+  }
+
+  .resource-list i { color: var(--navy); font-size: 1.1rem; width: 25px; text-align: center; }
+
   /* Footer */
   footer{
-    margin-top:40px;
-    text-align:center;
-    position:relative;
-    padding:20px 0;
+    margin-top: 50px;
+    text-align: center;
+    padding-bottom: 20px;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
   }
   .flag-strip{
-    height:20px;
-    background:linear-gradient(270deg, var(--saffron), var(--white), var(--green));
-    background-size:300% 100%;
-    animation: wave 5s linear infinite;
+    height: 12px;
+    background: linear-gradient(270deg, var(--saffron), var(--white), var(--green));
+    background-size: 200% 100%;
+    animation: wave 4s linear infinite;
+    margin-bottom: 20px;
+    border-radius: 50px;
   }
-  @keyframes wave{
-    0%{background-position:0 0;}
-    100%{background-position:300% 0;}
-  }
-  /* Animation class */
-  .animate{opacity:1 !important; transform:translateY(0) !important; transition:all 0.8s ease;}
+  @keyframes wave{ 0%{background-position:0 0;} 100%{background-position:200% 0;} }
+  
+  /* Scroll Animation Class */
+  .animate { opacity: 1 !important; transform: translateY(0) !important; transition: all 0.8s ease; }
 </style>
-</head>  
-<body>  
-  <div class="wrap">  
-    <header>  
-      <div class="ashoka"></div>  
-      <h1>Smart India Kit</h1>  
-      <p class="club">Rotaract Club of Netaji Subhas University of RID 3250</p>  
-      <div class="flag-band"></div>  
-      <p><strong>Club:</strong> Rotaract club of Netaji Subhas University Jamshedpur is an institute based Rotaract NGO of RID 3250 Bihar and Jharkhand.</p>  
-      <p><strong>Event:</strong> On the occasion of Republic Day we create a website in order to provide the youth and the needys a platform through which they can access many resources freely available on the internet and use them for their daily use and emergency needs. This includes courses and tutorials as well, which will skill up the youth and serve the educational purpose perfectly.</p>  
-    </header>    
-    <section class="sections">  
-      <div class="card" data-modal="courses">  
-        <h2>1) Courses & Tutorials</h2>  
-        <p>Free, high-quality learning resources to skill up.</p>  
-      </div>  
-      <div class="card" data-modal="helpline">  
-        <h2>2) National Helpline</h2>  
-        <p>Quick access to important emergency and support numbers.</p>  
-      </div>  
-      <div class="card" data-modal="jobs">  
-        <h2>3) Job Portals</h2>  
-        <p>Trusted job portals for fresher & experienced roles.</p>  
-      </div>  
-      <div class="card" data-modal="learning-platforms">  
-        <h2>4) Learning Platforms</h2>  
-        <p>Popular platforms for language learning, coding, and diverse courses.</p>  
+</head>
+<body>
+
+  <canvas id="petalCanvas"></canvas>
+
+  <div class="wrap">
+    
+    <header>
+      <div class="ashoka"></div>
+      <h1>Smart India Kit</h1>
+      <p class="club">Rotaract Club of Netaji Subhas University of RID 3250</p>
+      <div class="flag-band"></div>
+      <p><strong>Club:</strong> Rotaract club of Netaji Subhas University Jamshedpur is an institute based Rotaract NGO of RID 3250 Bihar and Jharkhand.</p>
+      <p><strong>Event:</strong> On the occasion of Republic Day we create a website in order to provide the youth and the needys a platform through which they can access many resources freely available on the internet.</p>
+    </header>
+
+    <section class="sections">
+      <div class="card" data-modal="courses">
+        <h2><i class="fas fa-laptop-code"></i> Courses & Tutorials</h2>
+        <p>Free, high-quality learning resources to skill up.</p>
       </div>
-      <div class="card" data-modal="educational-resources">  
-        <h2>5) Educational Resources</h2>  
-        <p>Science, math, and general education resources for all ages.</p>  
-      </div>  
-      <div class="card" data-modal="skill-development">  
-        <h2>6) Skill Development</h2>  
-        <p>Platforms offering professional and creative skill enhancement.</p>  
-      </div>  
-      <div class="card" data-modal="other-resources">  
-        <h2>7) Other Resources</h2>  
-        <p>General knowledge and educational video resources.</p>  
-      </div> 
-      <div class="card" data-modal="news-headlines">  
-        <h2>8) News Headlines 24x7</h2>  
-        <p>Latest news headlines from popular Indian news channels.</p>  
+      <div class="card" data-modal="helpline">
+        <h2><i class="fas fa-phone-volume"></i> National Helpline</h2>
+        <p>Quick access to important emergency and support numbers.</p>
       </div>
-      <div class="card" data-modal="govt-exams">  
-        <h2>9) Government Exam / Result</h2>  
-        <p>Information and results for government job exams.</p>  
+      <div class="card" data-modal="jobs">
+        <h2><i class="fas fa-briefcase"></i> Job Portals</h2>
+        <p>Trusted job portals for fresher & experienced roles.</p>
       </div>
-    </section>    
-    <section class="fighters">  
-      <h2>Stories of Indian Freedom Fighters</h2>  
-      <div class="grid">  
-        <div class="fighter"><h3>🇮🇳 Mahatma Gandhi</h3><p>Leader of the non-violent independence movement.</p><a href="https://en.wikipedia.org/wiki/Mahatma_Gandhi" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Subhas Chandra Bose</h3><p>Leader of the Indian National Army.</p><a href="https://en.wikipedia.org/wiki/Subhas_Chandra_Bose" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Bhagat Singh</h3><p>Revolutionary freedom fighter.</p><a href="https://en.wikipedia.org/wiki/Bhagat_Singh" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Rani Lakshmibai</h3><p>Brave Queen of Jhansi in 1857 revolt.</p><a href="https://en.wikipedia.org/wiki/Rani_of_Jhansi" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Sardar Vallabhbhai Patel</h3><p>Unifier of India post-independence.</p><a href="https://en.wikipedia.org/wiki/Vallabhbhai_Patel" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Dr. B. R. Ambedkar</h3><p>Architect of the Constitution.</p><a href="https://en.wikipedia.org/wiki/B._R._Ambedkar" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Jawaharlal Nehru</h3><p>First Prime Minister of India.</p><a href="https://en.wikipedia.org/wiki/Jawaharlal_Nehru" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Chandra Shekhar Azad</h3><p>Revolutionary leader of Hindustan Socialist Republican Army.</p><a href="https://en.wikipedia.org/wiki/Chandra_Shekhar_Azad" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Mangal Pandey</h3><p>Key figure in the 1857 rebellion.</p><a href="https://en.wikipedia.org/wiki/Mangal_Pandey" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Bal Gangadhar Tilak</h3><p>Father of Indian unrest.</p><a href="https://en.wikipedia.org/wiki/Bal_Gangadhar_Tilak" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Annie Besant</h3><p>Advocate of Indian self-rule.</p><a href="https://en.wikipedia.org/wiki/Annie_Besant" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Sarojini Naidu</h3><p>Nightingale of India.</p><a href="https://en.wikipedia.org/wiki/Sarojini_Naidu" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Bipin Chandra Pal</h3><p>One of Lal Bal Pal trio.</p><a href="https://en.wikipedia.org/wiki/Bipin_Chandra_Pal" target="_blank">Read More</a></div>  
-        <div class="fighter"><h3>🇮🇳 Gopal Krishna Gokhale</h3><p>Moderate political leader & reformer.</p><a href="https://en.wikipedia.org/wiki/Gopal_Krishna_Gokhale" target="_blank">Read More</a></div>  
-      </div>  
-    </section>    
-    <footer>  
-      <div class="flag-strip"></div>  
-      <p>Powered by <strong>Smart India Kit</strong> • Rotaract Club of Netaji Subhas University of RID 3250</p>  
-    </footer>  
-  </div>  
-  <!-- Modals -->  
+      <div class="card" data-modal="learning-platforms">
+        <h2><i class="fas fa-graduation-cap"></i> Learning Platforms</h2>
+        <p>Popular platforms for language learning, coding, and more.</p>
+      </div>
+      <div class="card" data-modal="educational-resources">
+        <h2><i class="fas fa-book-reader"></i> Educational Resources</h2>
+        <p>Science, math, and general education for all ages.</p>
+      </div>
+      <div class="card" data-modal="skill-development">
+        <h2><i class="fas fa-tools"></i> Skill Development</h2>
+        <p>Platforms offering professional and creative skill enhancement.</p>
+      </div>
+      <div class="card" data-modal="other-resources">
+        <h2><i class="fas fa-globe"></i> Other Resources</h2>
+        <p>General knowledge, encyclopedia and video resources.</p>
+      </div>
+      <div class="card" data-modal="news-headlines">
+        <h2><i class="fas fa-newspaper"></i> News Headlines 24x7</h2>
+        <p>Latest news headlines from popular Indian news channels.</p>
+      </div>
+      <div class="card" data-modal="govt-exams">
+        <h2><i class="fas fa-university"></i> Govt. Exam / Result</h2>
+        <p>Information and results for government job exams.</p>
+      </div>
+      
+      <div class="card" data-modal="scholarships">
+        <h2><i class="fas fa-hand-holding-usd"></i> Scholarships</h2>
+        <p>Financial aid and grants for students.</p>
+      </div>
+      <div class="card" data-modal="health">
+        <h2><i class="fas fa-heartbeat"></i> Health & Wellness</h2>
+        <p>Mental health and medical support.</p>
+      </div>
+      <div class="card" data-modal="startup">
+        <h2><i class="fas fa-rocket"></i> Startup India</h2>
+        <p>Innovation and business resources.</p>
+      </div>
+    </section>
+
+    <section class="fighters">
+      <h2><i class="fas fa-feather-alt"></i> Stories of Indian Freedom Fighters</h2>
+      <div class="grid">
+        <div class="fighter">
+          <img src="gandhi.jpg" alt="Mahatma Gandhi">
+          <h3>Mahatma Gandhi</h3>
+          <p>Father of the Nation</p>
+          <a href="https://en.wikipedia.org/wiki/Mahatma_Gandhi" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="subhas.jpg" alt="Subhas Chandra Bose">
+          <h3>Subhas Chandra Bose</h3>
+          <p>Netaji</p>
+          <a href="https://en.wikipedia.org/wiki/Subhas_Chandra_Bose" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="bhagat.jpg" alt="Bhagat Singh">
+          <h3>Bhagat Singh</h3>
+          <p>Shaheed-e-Azam</p>
+          <a href="https://en.wikipedia.org/wiki/Bhagat_Singh" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="rani.jpg" alt="Rani Lakshmibai">
+          <h3>Rani Lakshmibai</h3>
+          <p>Jhansi Ki Rani</p>
+          <a href="https://en.wikipedia.org/wiki/Rani_of_Jhansi" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="patel.jpg" alt="Sardar Patel">
+          <h3>Sardar Patel</h3>
+          <p>Iron Man of India</p>
+          <a href="https://en.wikipedia.org/wiki/Vallabhbhai_Patel" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="ambedkar.jpg" alt="Dr. B. R. Ambedkar">
+          <h3>Dr. B. R. Ambedkar</h3>
+          <p>Father of Constitution</p>
+          <a href="https://en.wikipedia.org/wiki/B._R._Ambedkar" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="nehru.jpg" alt="Jawaharlal Nehru">
+          <h3>Jawaharlal Nehru</h3>
+          <p>Chacha Nehru</p>
+          <a href="https://en.wikipedia.org/wiki/Jawaharlal_Nehru" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="azad.jpg" alt="Chandra Shekhar Azad">
+          <h3>Chandra Shekhar Azad</h3>
+          <p>Revolutionary Leader</p>
+          <a href="https://en.wikipedia.org/wiki/Chandra_Shekhar_Azad" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="mangal.jpg" alt="Mangal Pandey">
+          <h3>Mangal Pandey</h3>
+          <p>First War Hero</p>
+          <a href="https://en.wikipedia.org/wiki/Mangal_Pandey" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="tilak.jpg" alt="Bal Gangadhar Tilak">
+          <h3>Bal Gangadhar Tilak</h3>
+          <p>Lokmanya</p>
+          <a href="https://en.wikipedia.org/wiki/Bal_Gangadhar_Tilak" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="annie.jpg" alt="Annie Besant">
+          <h3>Annie Besant</h3>
+          <p>Home Rule League</p>
+          <a href="https://en.wikipedia.org/wiki/Annie_Besant" target="_blank">Read More</a>
+        </div>
+        <div class="fighter">
+          <img src="sarojini.jpg" alt="Sarojini Naidu">
+          <h3>Sarojini Naidu</h3>
+          <p>Nightingale of India</p>
+          <a href="https://en.wikipedia.org/wiki/Sarojini_Naidu" target="_blank">Read More</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="flag-strip"></div>
+      <p>Powered by <strong>Smart India Kit</strong> • Rotaract Club of Netaji Subhas University</p>
+    </footer>
+  </div>
+
   <div id="courses" class="modal">
     <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Courses & Tutorials</h3>  
-      <ul>  
-        <li><a href="https://youtu.be/yjyWI9wDYNs" target="_blank">Basic of Computer Course</a></li>  
-        <li><a href="https://youtu.be/v3iUx2SNspY" target="_blank">Cyber Security</a></li>  
-        <li><a href="https://youtu.be/UrsmFxEIp5k" target="_blank">Python Course</a></li>  
-        <li><a href="https://youtu.be/HBqWsrqK89U" target="_blank">HTML and CSS</a></li>  
-        <li><a href="https://youtu.be/HVjjoMvutj4" target="_blank">Full Stack</a></li>  
-        <li><a href="https://youtu.be/PymbRTMb4hY" target="_blank">Java</a></li>  
-        <li><a href="https://youtu.be/Ez8F0nW6S-w" target="_blank">GitHub</a></li>  
-        <li><a href="https://youtu.be/kunkYTKFNtI" target="_blank">Digital Marketing</a></li>  
-        <li><a href="https://youtu.be/mULvGdqFKEY" target="_blank">AI</a></li>  
-        <li><a href="https://youtu.be/EbcPEGcmRd0" target="_blank">Top 10 Skills</a></li>  
-        <li><a href="https://youtu.be/KVpxP3ZZtAc" target="_blank">Self Defence</a></li>
-        <li><a href="https://coursera.org" target="_blank">Coursera</a></li>
-        <li><a href="https://edx.org" target="_blank">edX</a></li>
-        <li><a href="https://khanacademy.org" target="_blank">Khan Academy</a></li>
-        <li><a href="https://open.edu/openlearn" target="_blank">OpenLearn</a></li>
-        <li><a href="https://ocw.mit.edu" target="_blank">MIT OpenCourseWare</a></li>
-      </ul>
-    </div>
-  </div>  
-  <div id="helpline" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>National Helpline</h3>  
-      <ul>  
-        <li><a href="https://v2.india.gov.in/directory/helpline" target="_blank">Government of India Helpline Directory</a></li>  
-        <li>Police — 100</li><li>Fire Brigade — 101</li><li>Ambulance — 102</li><li>Medical Emergency — 108</li>  
-        <li>Women Helpline — 181</li><li>Childline — 1098</li><li>Cyber Crime — 1930</li><li>Railway Helpline — 139</li>  
-        <li>Road Accident — 1073</li><li>Senior Citizens — 14567</li><li>Health Helpline — 104</li><li>HIV/AIDS Helpline — 1097</li>  
-      </ul>
-    </div>
-  </div>  
-  <div id="jobs" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Job Portals</h3>  
-      <ul>  
-        <li><a href="https://in.indeed.com/" target="_blank">Indeed</a></li>  
-        <li><a href="https://www.naukri.com/" target="_blank">Naukri</a></li>  
-        <li><a href="https://apna.co/" target="_blank">Apna</a></li>  
-        <li><a href="https://wellfound.com/" target="_blank">Wellfound</a></li>  
-        <li><a href="https://www.careerflow.ai/" target="_blank">CareerFlow AI</a></li>  
-        <li><a href="https://www.shine.com/" target="_blank">Shine</a></li>  
-        <li><a href="https://internshala.com/fresher-jobs/" target="_blank">Internshala</a></li>  
-      </ul>
-    </div>
-  </div>  
-  <div id="learning-platforms" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Learning Platforms</h3>  
-      <ul>
-        <li><a href="https://duolingo.com" target="_blank">Duolingo</a> - Language learning</li>
-        <li><a href="https://codecademy.com" target="_blank">Codecademy</a> - Coding</li>
-        <li><a href="https://udemy.com" target="_blank">Udemy</a> - Various courses</li>
-      </ul>
-    </div>
-  </div>
-  <div id="educational-resources" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Educational Resources</h3>  
-      <ul>
-        <li><a href="https://kids.nationalgeographic.com" target="_blank">National Geographic Kids</a> - Learning resources</li>
-        <li><a href="https://nasa.gov/stem" target="_blank">NASA STEM Resources</a> - Science and math resources</li>
-        <li><a href="https://bbc.co.uk/learning" target="_blank">BBC Learning</a> - Educational content</li>
-      </ul>
-    </div>
-  </div>
-  <div id="skill-development" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Skill Development</h3>  
-      <ul>
-        <li><a href="https://linkedin.com/learning" target="_blank">LinkedIn Learning</a> - Professional development</li>
-        <li><a href="https://skillshare.com" target="_blank">Skillshare</a> - Creative skills</li>
-        <li><a href="https://freecodecamp.org" target="_blank">FreeCodeCamp</a> - Coding</li>
-      </ul>
-    </div>
-  </div>
-  <div id="other-resources" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Other Resources</h3>  
-      <ul>
-        <li><a href="https://wikipedia.org" target="_blank">Wikipedia</a> - Online encyclopedia</li>
-        <li><a href="https://ed.ted.com" target="_blank">TED-Ed</a> - Educational videos</li>
-        <li><a href="https://crashcourse.com" target="_blank">Crash Course</a> - Educational videos</li>
-      </ul>
-    </div>
-  </div>
-  <div id="news-headlines" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>News Headlines 24x7</h3>  
-      <ul>
-        <li><a href="https://www.abplive.com/news" target="_blank">ABP News</a></li>
-        <li><a href="https://www.aajtak.in" target="_blank">Aaj Tak</a></li>
-        <li><a href="https://www.republicworld.com/latest-news.html" target="_blank">Republic Bharat</a></li>
-        <li><a href="https://www.indiatoday.in" target="_blank">India Today</a></li>
-        <li><a href="https://www.hindustantimes.com" target="_blank">Hindustan Times</a></li>
-      </ul>
-    </div>
-  </div>
-  <div id="govt-exams" class="modal">
-    <div class="modal-content">
-      <button class="close">Close</button>
-      <h3>Government Exam / Result</h3>  
-      <ul>
-        <li><a href="https://www.sarkariexam.com/" target="_blank">Sarkari Exam</a></li>
-        <li><a href="https://sarkariresult.com.cm/" target="_blank">Sarkari Result</a></li>
-        <li><a href="https://www.freejobalert.com/" target="_blank">Free Job Alert</a></li>
-        <li><a href="https://pmvbry.labour.gov.in/" target="_blank">Pradhan Mantri Viksit Bharat Rozgar Yojna</a></li>
-        <li><a href="https://www.scconline.com/" target="_blank">SSC Online</a></li>
-      </ul>
+      <div class="modal-header">
+        <h3><i class="fas fa-laptop-code"></i> Courses & Tutorials</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://swayam.gov.in/" target="_blank"><i class="fas fa-award"></i> SWAYAM (Govt of India)</a></li>
+          <li><a href="https://nptel.ac.in/" target="_blank"><i class="fas fa-university"></i> NPTEL (IITs & IISc)</a></li>
+          <li><a href="https://youtu.be/yjyWI9wDYNs" target="_blank"><i class="fab fa-youtube"></i> Basic Computer Course</a></li>
+          <li><a href="https://youtu.be/v3iUx2SNspY" target="_blank"><i class="fas fa-shield-alt"></i> Cyber Security</a></li>
+          <li><a href="https://youtu.be/UrsmFxEIp5k" target="_blank"><i class="fab fa-python"></i> Python Course</a></li>
+          <li><a href="https://youtu.be/HBqWsrqK89U" target="_blank"><i class="fab fa-html5"></i> HTML and CSS</a></li>
+          <li><a href="https://youtu.be/HVjjoMvutj4" target="_blank"><i class="fas fa-layer-group"></i> Full Stack Dev</a></li>
+          <li><a href="https://youtu.be/PymbRTMb4hY" target="_blank"><i class="fab fa-java"></i> Java</a></li>
+          <li><a href="https://youtu.be/Ez8F0nW6S-w" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+          <li><a href="https://youtu.be/kunkYTKFNtI" target="_blank"><i class="fas fa-bullhorn"></i> Digital Marketing</a></li>
+          <li><a href="https://youtu.be/mULvGdqFKEY" target="_blank"><i class="fas fa-robot"></i> Artificial Intelligence</a></li>
+          <li><a href="https://youtu.be/KVpxP3ZZtAc" target="_blank"><i class="fas fa-fist-raised"></i> Self Defence</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <script>  
-    // Scroll animations  
-    const observer = new IntersectionObserver(entries=>{  
-      entries.forEach(entry=>{  
-        if(entry.isIntersecting){  
-          entry.target.classList.add('animate');  
-        }  
-      });  
-    }, {threshold:0.2});  
-    document.querySelectorAll('.card, .fighters').forEach(el=>observer.observe(el));  
-    // Modal open/close  
-    document.querySelectorAll('.card').forEach(card=>{  
-      card.addEventListener('click', ()=>{  
-        const modal = document.getElementById(card.dataset.modal);  
-        modal.style.display='flex';  
-        modal.querySelector('.modal-content').style.animation='slideIn 0.4s ease forwards';  
-      });  
-    });  
-    document.querySelectorAll('.close').forEach(btn=>{  
-      btn.addEventListener('click', ()=>{  
-        btn.closest('.modal').style.display='none';  
-      });  
-    });  
-    window.addEventListener('click', e=>{  
-      document.querySelectorAll('.modal').forEach(m=>{  
-        if(e.target===m){m.style.display='none';}  
-      });  
-    });  
-  </script>  
-</body>  
+  <div id="helpline" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-phone-volume"></i> National Helpline</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://v2.india.gov.in/directory/helpline" target="_blank"><i class="fas fa-atlas"></i> GOI Helpline Directory</a></li>
+          <li><a href="tel:112"><i class="fas fa-exclamation-circle"></i> National Emergency - 112</a></li>
+          <li><a href="tel:100"><i class="fas fa-user-shield"></i> Police - 100</a></li>
+          <li><a href="tel:101"><i class="fas fa-fire-extinguisher"></i> Fire Brigade - 101</a></li>
+          <li><a href="tel:102"><i class="fas fa-ambulance"></i> Ambulance - 102</a></li>
+          <li><a href="tel:108"><i class="fas fa-star-of-life"></i> Medical Emergency - 108</a></li>
+          <li><a href="tel:181"><i class="fas fa-female"></i> Women Helpline - 181</a></li>
+          <li><a href="tel:1098"><i class="fas fa-child"></i> Childline - 1098</a></li>
+          <li><a href="tel:1930"><i class="fas fa-laptop-medical"></i> Cyber Crime - 1930</a></li>
+          <li><a href="tel:139"><i class="fas fa-train"></i> Railway Helpline - 139</a></li>
+          <li><a href="tel:14567"><i class="fas fa-blind"></i> Senior Citizens - 14567</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="jobs" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-briefcase"></i> Job Portals</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://www.ncs.gov.in/" target="_blank"><i class="fas fa-flag"></i> National Career Service</a></li>
+          <li><a href="https://www.linkedin.com/jobs/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Jobs</a></li>
+          <li><a href="https://in.indeed.com/" target="_blank"><i class="fas fa-search"></i> Indeed</a></li>
+          <li><a href="https://www.naukri.com/" target="_blank"><i class="fas fa-id-card"></i> Naukri</a></li>
+          <li><a href="https://apna.co/" target="_blank"><i class="fas fa-handshake"></i> Apna</a></li>
+          <li><a href="https://internshala.com/fresher-jobs/" target="_blank"><i class="fas fa-user-graduate"></i> Internshala</a></li>
+          <li><a href="https://www.shine.com/" target="_blank"><i class="fas fa-lightbulb"></i> Shine</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="learning-platforms" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-graduation-cap"></i> Learning Platforms</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://duolingo.com" target="_blank"><i class="fas fa-language"></i> Duolingo</a></li>
+          <li><a href="https://codecademy.com" target="_blank"><i class="fas fa-code"></i> Codecademy</a></li>
+          <li><a href="https://udemy.com" target="_blank"><i class="fas fa-video"></i> Udemy</a></li>
+          <li><a href="https://coursera.org" target="_blank"><i class="fas fa-shapes"></i> Coursera</a></li>
+          <li><a href="https://khanacademy.org" target="_blank"><i class="fas fa-chalkboard-teacher"></i> Khan Academy</a></li>
+          <li><a href="https://edx.org" target="_blank"><i class="fas fa-university"></i> edX</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="educational-resources" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-book-reader"></i> Educational Resources</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://diksha.gov.in/" target="_blank"><i class="fas fa-book-open"></i> DIKSHA (NCERT)</a></li>
+          <li><a href="https://kids.nationalgeographic.com" target="_blank"><i class="fas fa-leaf"></i> Nat Geo Kids</a></li>
+          <li><a href="https://nasa.gov/stem" target="_blank"><i class="fas fa-rocket"></i> NASA STEM</a></li>
+          <li><a href="https://bbc.co.uk/learning" target="_blank"><i class="fas fa-tv"></i> BBC Learning</a></li>
+          <li><a href="https://ocw.mit.edu" target="_blank"><i class="fas fa-school"></i> MIT OpenCourseWare</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="skill-development" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-tools"></i> Skill Development</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://www.digitalindia.gov.in/" target="_blank"><i class="fas fa-wifi"></i> Digital India</a></li>
+          <li><a href="https://linkedin.com/learning" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn Learning</a></li>
+          <li><a href="https://skillshare.com" target="_blank"><i class="fas fa-pencil-ruler"></i> Skillshare</a></li>
+          <li><a href="https://freecodecamp.org" target="_blank"><i class="fab fa-free-code-camp"></i> FreeCodeCamp</a></li>
+          <li><a href="https://www.startuptn.in/" target="_blank"><i class="fas fa-lightbulb"></i> Startup Resources</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="other-resources" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-globe"></i> Other Resources</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://wikipedia.org" target="_blank"><i class="fab fa-wikipedia-w"></i> Wikipedia</a></li>
+          <li><a href="https://ed.ted.com" target="_blank"><i class="fas fa-lightbulb"></i> TED-Ed</a></li>
+          <li><a href="https://crashcourse.com" target="_blank"><i class="fas fa-video"></i> Crash Course</a></li>
+          <li><a href="https://archive.org" target="_blank"><i class="fas fa-archive"></i> Internet Archive</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="news-headlines" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-newspaper"></i> News Headlines 24x7</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://www.ddnews.gov.in/" target="_blank"><i class="fas fa-tv"></i> DD News (Govt)</a></li>
+          <li><a href="https://www.abplive.com/news" target="_blank"><i class="fas fa-rss"></i> ABP News</a></li>
+          <li><a href="https://www.aajtak.in" target="_blank"><i class="fas fa-rss"></i> Aaj Tak</a></li>
+          <li><a href="https://www.indiatoday.in" target="_blank"><i class="fas fa-rss"></i> India Today</a></li>
+          <li><a href="https://www.hindustantimes.com" target="_blank"><i class="fas fa-newspaper"></i> Hindustan Times</a></li>
+          <li><a href="https://timesofindia.indiatimes.com/" target="_blank"><i class="fas fa-newspaper"></i> Times of India</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="govt-exams" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-university"></i> Govt. Exam / Result</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://www.sarkariexam.com/" target="_blank"><i class="fas fa-file-alt"></i> Sarkari Exam</a></li>
+          <li><a href="https://sarkariresult.com.cm/" target="_blank"><i class="fas fa-check-circle"></i> Sarkari Result</a></li>
+          <li><a href="https://www.freejobalert.com/" target="_blank"><i class="fas fa-bell"></i> Free Job Alert</a></li>
+          <li><a href="https://ssc.nic.in/" target="_blank"><i class="fas fa-landmark"></i> SSC Official</a></li>
+          <li><a href="https://upsc.gov.in/" target="_blank"><i class="fas fa-landmark"></i> UPSC Official</a></li>
+          <li><a href="https://ibps.in/" target="_blank"><i class="fas fa-university"></i> IBPS (Banking)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="scholarships" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-hand-holding-usd"></i> Scholarships</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://scholarships.gov.in/" target="_blank"><i class="fas fa-landmark"></i> National Scholarship Portal</a></li>
+          <li><a href="https://www.buddy4study.com/" target="_blank"><i class="fas fa-user-graduate"></i> Buddy4Study</a></li>
+          <li><a href="https://www.vidyalakshmi.co.in/" target="_blank"><i class="fas fa-rupee-sign"></i> Vidya Lakshmi</a></li>
+          <li><a href="https://mhrd.gov.in/scholarships" target="_blank"><i class="fas fa-book"></i> Ministry of Edu Grants</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="health" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-heartbeat"></i> Health & Wellness</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://esanjeevani.mohfw.gov.in/" target="_blank"><i class="fas fa-user-md"></i> eSanjeevani OPD</a></li>
+          <li><a href="https://manodarpan.education.gov.in/" target="_blank"><i class="fas fa-brain"></i> Manodarpan (Mental Health)</a></li>
+          <li><a href="https://www.practo.com/" target="_blank"><i class="fas fa-stethoscope"></i> Practo Doctors</a></li>
+          <li><a href="https://www.1mg.com/" target="_blank"><i class="fas fa-pills"></i> Tata 1mg</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="startup" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-rocket"></i> Startup India</h3>
+        <button class="close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="resource-list">
+          <li><a href="https://www.startupindia.gov.in/" target="_blank"><i class="fas fa-flag-checkered"></i> Startup India Portal</a></li>
+          <li><a href="https://aim.gov.in/" target="_blank"><i class="fas fa-lightbulb"></i> Atal Innovation Mission</a></li>
+          <li><a href="https://www.ycombinator.com/library" target="_blank"><i class="fas fa-book-open"></i> YC Startup Library</a></li>
+          <li><a href="https://www.makeinindia.com/" target="_blank"><i class="fas fa-industry"></i> Make in India</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Scroll & Modal Logic ---
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('animate');
+        }
+      });
+    }, {threshold:0.15});
+    document.querySelectorAll('.card, .fighters').forEach(el=>observer.observe(el));
+
+    // Modal Logic
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const modal = document.getElementById(card.dataset.modal);
+        if(modal) {
+          modal.style.display='flex';
+          const content = modal.querySelector('.modal-content');
+          content.style.opacity = '0';
+          content.style.transform = 'translateY(30px)';
+          setTimeout(() => {
+            content.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            content.style.opacity = '1';
+            content.style.transform = 'translateY(0)';
+          }, 50);
+        }
+      });
+    });
+
+    document.querySelectorAll('.close').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        btn.closest('.modal').style.display='none';
+      });
+    });
+
+    window.addEventListener('click', e=>{
+      document.querySelectorAll('.modal').forEach(m=>{
+        if(e.target===m){m.style.display='none';}
+      });
+    });
+
+    // --- Petal Animation Logic (Canvas) ---
+    const canvas = document.getElementById('petalCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    
+    // Mouse interaction
+    let mouse = { x: undefined, y: undefined };
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+    // Touch interaction for mobile
+    window.addEventListener('touchmove', (e) => {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    });
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.init();
+      }
+
+      init() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height - height; // Start above
+        this.size = Math.random() * 5 + 2; // Tiny petals
+        this.speedY = Math.random() * 1.5 + 0.5;
+        this.speedX = Math.random() * 1 - 0.5;
+        // Theme colors: Saffron, White, Green
+        const colors = ['rgba(255, 153, 51, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(19, 136, 8, 0.6)'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.angle = Math.random() * 360;
+        this.spin = Math.random() < 0.5 ? 1 : -1;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.y * 0.01); // Swaying motion
+        this.angle += this.spin;
+
+        // Mouse interaction (Repulsion)
+        if(mouse.x){
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx*dx + dy*dy);
+          if (distance < 100) {
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (100 - distance) / 100;
+            const directionX = forceDirectionX * force * 5;
+            const directionY = forceDirectionY * force * 5;
+            this.x -= directionX;
+            this.y -= directionY;
+          }
+        }
+
+        // Reset if out of view
+        if (this.y > height) {
+          this.y = -10;
+          this.x = Math.random() * width;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        // Draw a simple petal shape
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const numberOfParticles = window.innerWidth < 600 ? 30 : 60; // Fewer on mobile
+      for (let i = 0; i < numberOfParticles; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    initParticles();
+    animate();
+  </script>
+</body>
 </html>
